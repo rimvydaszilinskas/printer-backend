@@ -10,13 +10,17 @@ export default function Event(sequelize, Sequelize){
             type: Sequelize.STRING,
             allowNull: false
         },
+        tbid: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
         startDate: {
             type: Sequelize.DATE,
-            allowNull: false
+            allowNull: true
         },
         endDate: {
             type: Sequelize.DATE,
-            allowNull: false
+            allowNull: true
         }
     });
 }

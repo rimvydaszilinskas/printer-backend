@@ -3,33 +3,79 @@ import { Op } from 'sequelize';
 
 export default function PrinterServices(models) {
     const Printer = models.Printer;
+    const Event = models.Event;
 
     const get = (id) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Printer.findOne({
                 where: {
-                    id: id
-                }
+                    id: id,
+                },
+                include: [
+                    {
+                        model: Event,
+                        where: {
+                            [Op.and]: [
+                                {
+                                    startDate: {
+                                        [Op.lte]: Date.now()
+                                    }
+                                },
+                                {
+                                    endDate: {
+                                        [Op.gte]: Date.now()
+                                    }
+                                }
+                            ]
+                        },
+                        required: false
+                    }
+                ]
             }).then(printer => {
                 resolve(printer);
+            }).catch(err => {
+                reject(err);
             });
         });
     }
 
+    const findOne = (identifier='', id='') => {
+        return new Promise((resolve, reject) => {
+            Printer.findOne({
+                where: {
+                    [Op.or]: [
+                        {
+                            identifier: identifier,
+                        },
+                        {
+                            id: id
+                        }
+                    ]
+                }
+            }).then(printer => {
+                resolve(printer);
+            }).catch(err => {
+                reject(err);
+            })
+        });
+    }
+
     const getAll = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Printer.findAll().then(printers => {
                 resolve(printers);
+            }).catch(err => {
+                reject(err);
             });
         });
     }
 
     const getAllActiveEvents = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             database.models.Printer.findAll({
                 include: [
                     {
-                        model:database.models.Event,
+                        model: Event,
                         where: {
                             [Op.and]: [
                                 {
@@ -49,22 +95,37 @@ export default function PrinterServices(models) {
                 ]
             }).then(response => {
                 resolve(response);
+            }).catch(err => {
+                reject(err);
             });
         });
     }
 
-    const create = (printer) => {
-        return new Promise(resolve => {
-            Printer.create({
-                identifier: printer.identifier 
-            }).then(printer => {
-                resolve(printer);
+    const create = (identifier) => {
+        return new Promise((resolve, reject) => {
+            Printer.findOne({
+                where: {
+                    identifier: identifier
+                }
+            }).then(response => {
+                if(response)
+                    throw Error('Printer already exists');
+                else
+                    Printer.create({
+                        identifier: identifier 
+                    }).then(printer => {
+                        resolve(printer);
+                    }).catch(err => {
+                        throw err;
+                    });
+            }).catch(err => {
+                reject(err);
             });
-        });
+        })
     }
 
     const update = (printer) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Printer.update({
                 identifier: printer.identifier
             }, {
@@ -73,18 +134,22 @@ export default function PrinterServices(models) {
                 }
             }).then(updated => {
                 resolve(updated);
+            }).catch(err => {
+                reject(err);
             });
         });
     }
 
     const remove = (id) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Printer.delete({
                 where: {
                     id: id
                 }
             }).then(printer => {
                 resolve(printer);
+            }).catch(err => {
+                reject(err);
             });
         });
     }
@@ -95,6 +160,7 @@ export default function PrinterServices(models) {
         create,
         update,
         remove,
-        getAllActiveEvents
+        getAllActiveEvents,
+        findOne
     }
 }

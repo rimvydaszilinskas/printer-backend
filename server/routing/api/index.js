@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import PrinterRouting from './printer/index';
+import EventRouting from './event/index';
 
 export default function ApiRouting(config) {
     const router = Router();
@@ -9,6 +10,7 @@ export default function ApiRouting(config) {
     });
 
     router.use('/printer', PrinterRouting(config));
+    router.use('/event', EventRouting(config));
 
     return router;
 };

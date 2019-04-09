@@ -7,7 +7,10 @@ export default function SecretOK (conf) {
         if (secret === sentSecret) {
             next();
         } else {
-            res.send('Wrong secret');
+            res.status(401).json({
+                status: 401,
+                message: 'Unauthorized' 
+            });
         }
     }
 

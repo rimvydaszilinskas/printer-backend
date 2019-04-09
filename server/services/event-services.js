@@ -1,41 +1,48 @@
-// const Op = require('sequelize').Op;
 import { Op } from 'sequelize';
 
 export default function EventServices(models) {
     const Event = models.Event;
 
     const get = (id) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Event.findOne({
                 where: {
                     id: id
                 }
             }).then(event => {
                 resolve(event);
+            }).catch(err => {
+                reject(err.message);
             });
         });
     };
 
     const getAll = () => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Event.findAll().then(events => {
                 resolve(events);
+            }).catch(err => {
+                reject(err.message);
             });
         });
     };
 
     const create = (event) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Event.create({
-                identifier: printer.identifier 
+                title: event.title,
+                startDate: event.startDate,
+                endDate: event.endDate 
             }).then(event => {
                 resolve(event);
+            }).catch(err => {
+                reject(err.message);
             });
         });
     };
 
     const update = (event) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Event.update({
                 title: event.title,
                 startDate: event.startDate,
@@ -46,18 +53,22 @@ export default function EventServices(models) {
                 }
             }).then(updated => {
                 resolve(updated);
+            }).catch(err => {
+                reject(err.message);
             });
         });
     };
 
     const remove = (id) => {
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             Event.delete({
                 where: {
                     id: id
                 }
             }).then(event => {
                 resolve(event);
+            }).catch(err => {
+                reject(err.message);
             });
         });
     };

@@ -1,6 +1,17 @@
 # Printer backend API
 
-This is the backend for the printer project. 
+This is the backend for the printer project.
+
+## Routing
+
+This part explains how to use the applacition with HTTP REST API requests
+
+#### <b>[POST] /api/printer/</b>
+```
+Checks if the printer is registered to the system
+    - If it is registered, checks for the currently happening event and returns details about it.
+    - If not registers to the system and sends back data about the registration.
+```
 
 ## Printer setup
 
