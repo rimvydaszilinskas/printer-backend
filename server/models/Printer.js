@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+export default function Printer(sequelize, Sequelize) {
     return sequelize.define('printer', {
         id: {
             type: Sequelize.UUID,

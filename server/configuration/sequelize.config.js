@@ -1,8 +1,8 @@
-const sequelize = require('sequelize');
-const Printer = require('../models/Printer');
-const Event = require('../models/Event');
+import sequelize from 'sequelize';
+import Printer from '../models/Printer';
+import Event from '../models/Event';
 
-module.exports = (config) => {
+export default function Sequelize(config) {
     const sqlize = new sequelize(config.database.connection);
 
     let database = {}

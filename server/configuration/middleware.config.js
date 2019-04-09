@@ -1,4 +1,4 @@
-module.exports = (conf) => {
+export default function SecretOK (conf) {
     const secret = conf['application']['secret'];
 
     function canRegister(req, res, next) {

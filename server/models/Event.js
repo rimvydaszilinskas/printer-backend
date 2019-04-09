@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+export default function Event(sequelize, Sequelize){
     return sequelize.define('event', {
         id: {
             type: Sequelize.UUID,
