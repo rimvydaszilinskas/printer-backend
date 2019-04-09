@@ -7,21 +7,27 @@ import SecretOK from './server/configuration/middleware.config';
 import Routing from './server/routing'
 import PrinterServices from './server/services/printer-services';
 import EventServices from './server/services/event-services';
+import UserServices from './server/services/user-services';
 
 const config = Config['development'];
 
+// set up middleware for API requests
 const secretOK = SecretOK(config);
-const database = Sequelize(config);
-const printerServices = PrinterServices(database.models);
-const eventServices = EventServices(database.models)
 
 config.middleware = {
     SecretOK: secretOK
 };
 
+// setup database
+const database = Sequelize(config);
+const printerServices = PrinterServices(database.models);
+const eventServices = EventServices(database.models)
+const userServices = UserServices(database.models)
+
 config.services = {
     PrinterServices: printerServices,
-    EventServices: eventServices
+    EventServices: eventServices,
+    UserServices: userServices
 };
 
 const app = express();

@@ -1,6 +1,7 @@
 import sequelize from 'sequelize';
 import Printer from '../models/Printer';
 import Event from '../models/Event';
+import User from '../models/User';
 
 export default function Sequelize(config) {
     const sqlize = new sequelize(config.database.connection);
@@ -10,11 +11,13 @@ export default function Sequelize(config) {
 
     const printer = Printer(sqlize, sequelize);
     const event = Event(sqlize, sequelize);
+    const user = User(sqlize, sequelize);
 
     const printerEvent = printer.hasMany(event, {foreignKey: {allowNull: true}});
     
     database.models.Printer = printer;
     database.models.Event = event;
+    database.models.User = user;
 
     if(config.database.sync) {
         sqlize.query('SET FOREIGN_KEY_CHECKS=0', {raw: true}).then(result => 

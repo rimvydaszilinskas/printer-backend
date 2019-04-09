@@ -1,13 +1,12 @@
 import { Router } from 'express';
 
+// Route: /api/event
 export default function EventRouting(config) {
     const router = Router();
 
-    router.get('/', (req, res) => {
-        res.send(config)
-    });
-
     router.post('/create', config.middleware.SecretOK, (req, res) => {
+        // create an event
+        // parameters: title, startDate, endDate
         if(req.body.title) {
             config.services.EventServices.create({
                 title: req.body.title,

@@ -11,6 +11,19 @@ This part explains how to use the applacition with HTTP REST API requests
 Checks if the printer is registered to the system
     - If it is registered, checks for the currently happening event and returns details about it.
     - If not registers to the system and sends back data about the registration.
+Required parameters:
+    id
+    identifier
+```
+
+#### <b>[POST] /api/event/</b>
+```
+Creates an event in the database
+
+Required parameters:
+    title*
+    startDate
+    endDate
 ```
 
 ## Printer setup
@@ -65,7 +78,7 @@ sudo python3 /home/pi/printer/main.py &
 
 ## Network setup
 
-Currently uses bluetooth.
+Currently uses wifi.
 
 ## Manual project setup
 

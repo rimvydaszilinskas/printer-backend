@@ -1,12 +1,13 @@
 import { Router } from 'express';
 
+// Route: /api/printer
 export default function PrinterRouting(config) {
     const router = Router();
 
     router.post('/', config.middleware.SecretOK, (req, res) => {
-        /* Register printer, get active event and receive info about the printer and event
-         *
-         */
+        // Register printer, get active event and receive info about the printer and event
+        // Params: id || identifier
+        
         if(req.body.id || req.body.identifier){
             config.services.PrinterServices.findOne(req.body.identifier, req.body.id)
                 .then(printer => {
