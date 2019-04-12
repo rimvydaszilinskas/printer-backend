@@ -8,6 +8,7 @@ import Routing from './server/routing'
 import PrinterServices from './server/services/printer-services';
 import EventServices from './server/services/event-services';
 import UserServices from './server/services/user-services';
+import path from 'path';
 
 const config = Config['development'];
 
@@ -34,6 +35,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+app.set('view engine', 'pug');
+app.set('views', path.join(__dirname, 'views'))
 
 app.use('/', Routing(config));
 

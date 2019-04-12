@@ -12,34 +12,43 @@ export default function PrinterRouting(config) {
             config.services.PrinterServices.findOne(req.body.identifier, req.body.id)
                 .then(printer => {
                     if(printer) {
+                        console.log('if')
                         config.services.PrinterServices.get(printer.id)
                             .then(response => {
-                                res.status(200).json({
+                                return res.status(200).json({
                                     status: 200,
                                     response: response
                                 });
                             }).catch(err => {
-                                res.status(500).json({
+                                console.log('ifErr')
+                                return res.status(500).json({
                                     status: 500,
                                     response: err.message
                                 });
                             });
                     } else {
+                        if(!req.body.identifier)
+                            return res.status(400).json({
+                                status: 400,
+                                response: 'No IDENTIFIER included to register'
+                            });
                         config.services.PrinterServices.create(req.body.identifier)
                             .then(printer => {
-                                res.status(201).json({
+                                return res.status(201).json({
                                     status: 201,
                                     response: printer
                                 });
                             }).catch(err => {
-                                res.status(500).json({
+                                console.log(err);
+                                return res.status(500).json({
                                     status: 500,
                                     response: err.message
                                 });
                             });
                     }
                 }).catch(err => {
-                    res.status(500).json({
+                    console.log('errror')
+                    return res.status(500).json({
                         status: 500,
                         response: err.message
                     });

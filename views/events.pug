@@ -1,0 +1,24 @@
+extends templates/layout
+block main
+    if events.length
+        table
+            thead
+                tr
+                    th ID
+                    th Title
+                    th Month
+                    th Days
+                    th Actions
+            tbody
+                each event in events
+                    tr
+                        td=event.id
+                        td=event.title
+                        td=event.startDate.getMonth() + 1
+                        td=`${event.startDate.getDate()} - ${event.endDate.getDate()}`
+                        td 
+                            a.waves-effect.waves-light.btn(href=`/portal/events/${event.id}`) View more
+        a.btn-floating(href="/portal/events/new")
+            i.material-icons add
+    else
+        h4 No events

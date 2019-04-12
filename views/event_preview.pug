@@ -1,0 +1,41 @@
+extends templates/layout
+block main
+    form.col.s12(method="post", action="/portal/events/update")
+        .row
+            .input-field.col.s12
+                input#id.validate(type='text', name="title", value=event.id, required, disabled)
+                label(for='id') ID
+        .row
+            .input-field.col.s6
+                input#title.validate(type='text', name="title", value=event.title, required)
+                label(for='title') Event title
+            .input-field.col.s6
+                input#tbid.validate(type='text', value=event.tbid, name="tbid")
+                label(for='tbid') Ticketbutler event ID
+        .row
+            .input-field.col.s6
+                input#start-date.datepicker(type='text', name="startDate", required)
+                label(for='start-date') Event start date
+            .input-field.col.s6
+                input#start-time.timepicker(type='text', name="startTime")
+                label(for='start-time') Event start time
+        .row
+            .input-field.col.s6
+                input#end-date.datepicker(type='text', name="endDate", required)
+                label(for='end-date') Event end date
+            .input-field.col.s6
+                input#end-time.timepicker(type='text', name="endTime")
+                label(for='end-time') Event end time
+        .row
+            button.btn.waves-effect.waves-light(type='submit', name='action')
+                | Submit
+                i.material-icons.right send
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.datepicker');
+            var instances = M.Datepicker.init(elems);
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.timepicker');
+            var instances = M.Timepicker.init(elems);
+        });

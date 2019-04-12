@@ -14,9 +14,11 @@ Checks if the printer is registered to the system
 Required parameters:
     id
     identifier
+Returns: 
+    Printer object including currently happening events array (should be max of len 1)
 ```
 
-#### <b>[POST] /api/event/</b>
+#### <b>[POST] /api/event/create/</b>
 ```
 Creates an event in the database
 
@@ -94,11 +96,13 @@ Printer identifier has to be changed manually.
 sudo nano /home/pi/printer/main.py
 ```
 
-Find variable called <b>PRINTER_IDENTIFIER</b> and assign a new value to it
+Find variable called <b>PRINTER_IDENTIFIER</b> and assign a new value to it.
 
 ```python
-PRINTER_IDENTIFIER = "1de5cba17b2b4ea0a21a40bddd6df9c1"
+PRINTER_IDENTIFIER = "printer id"
 ```
+
+Note: the id should be without slashes/spaces/dashes
 
 ### Connecting to event
 

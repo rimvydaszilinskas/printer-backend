@@ -32,7 +32,8 @@ export default function EventServices(models) {
             Event.create({
                 title: event.title,
                 startDate: event.startDate,
-                endDate: event.endDate 
+                endDate: event.endDate,
+                tbid: event.tbid 
             }).then(event => {
                 resolve(event);
             }).catch(err => {
@@ -46,7 +47,8 @@ export default function EventServices(models) {
             Event.update({
                 title: event.title,
                 startDate: event.startDate,
-                endDate: event.endDate
+                endDate: event.endDate,
+                tbid: tbid
             }, {
                 where: {
                     id: event.id

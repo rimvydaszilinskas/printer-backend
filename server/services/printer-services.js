@@ -39,24 +39,64 @@ export default function PrinterServices(models) {
         });
     }
 
-    const findOne = (identifier='', id='') => {
+    const getFull = (id) => {
         return new Promise((resolve, reject) => {
             Printer.findOne({
                 where: {
-                    [Op.or]: [
-                        {
-                            identifier: identifier,
-                        },
-                        {
-                            id: id
-                        }
-                    ]
-                }
+                    id: id,
+                },
+                include: [
+                    {
+                        model: Event,
+                        required: false
+                    }
+                ]
             }).then(printer => {
                 resolve(printer);
             }).catch(err => {
                 reject(err);
-            })
+            });
+        });
+    }
+
+    const findOne = (identifier=null, id=null) => {
+        return new Promise((resolve, reject) => {
+            if(id && id.length === 36)
+                Printer.findOne({
+                    where: {
+                        id: id
+                    }
+                }).then(printer => {
+                    resolve(printer);
+                }).catch(err => {
+                    reject(err);
+                });
+            else
+                Printer.findOne({
+                    where: {
+                        identifier: identifier
+                    }
+                }).then(printer => {
+                    resolve(printer);
+                }).catch(err => {
+                    reject(err);
+                });
+            // Printer.findOne({
+            //     where: {
+            //         [Op.or]: [
+            //             {
+            //                 identifier: identifier,
+            //             },
+            //             {
+            //                 id: id
+            //             }
+            //         ]
+            //     }
+            // }).then(printer => {
+            //     resolve(printer);
+            // }).catch(err => {
+            //     reject(err);
+            // })
         });
     }
 
@@ -161,6 +201,7 @@ export default function PrinterServices(models) {
         update,
         remove,
         getAllActiveEvents,
-        findOne
+        findOne,
+        getFull
     }
 }
