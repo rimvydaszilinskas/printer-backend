@@ -1,0 +1,101 @@
+extends templates/layout
+block main
+    form.col.s12(method="POST", enctype="multipart/form-data", action="/portal/templates/upload")
+        input(type="text",hidden=true, name="eventId", value=eventId)
+        if template
+            if template.id
+                input(type="text",hidden=true, name="id", value=template.id)
+        .row
+            .file-field.input-field.col.s12
+                .btn
+                    span File
+                    input(type='file', name="image")
+                .file-path-wrapper
+                    input.file-path.validate(type='text')
+        .row
+            .input.field.col.s12
+                select(name="label")
+                    if template
+                        if template.label
+                            option(value=template.label)=template.label
+                    option(value="") Select a label
+                    option(value="12") 12
+                    option(value="29") 29
+                    option(value="38") 38
+                    option(value="50") 50
+                    option(value="54") 54
+                    option(value="62") 62
+                    option(value="102") 102
+                    option(value="17x54") 17x54
+                    option(value="17x87") 17x87
+                    option(value="23x23") 23x23
+                    option(value="29x42") 29x42
+                    option(value="29x90") 29x90
+                    option(value="39x90") 39x90
+                    option(value="39x48") 39x48
+                    option(value="52x29") 52x29
+                    option(value="62x29") 62x29
+                    option(value="62x100") 62x100
+                    option(value="102x51") 102x51
+                    option(value="102x152") 102x152
+        .row
+            .input-field.col.s12
+                select(name="printer")
+                    if template
+                        if template.printer
+                            option(value=template.printer)=template.printer
+                    option(value="") Select a printer
+                    option(value="QL-500") QL-500
+                    option(value="QL-550") QL-550
+                    option(value="QL-560") QL-560
+                    option(value="QL-570") QL-570
+                    option(value="QL-580N") QL-580N
+                    option(value="QL-650TD") QL-650TD
+                    option(value="QL-700") QL-700
+                    option(value="QL-710W") QL-710W
+                    option(value="QL-720NW") QL-720NW
+                    option(value="QL-800") QL-800
+                    option(value="QL-810W") QL-810W
+                    option(value="QL-820NWB") QL-820NWB
+                    option(value="QL-1050") QL-1050
+                    option(value="QL-1060N") QL-1060N
+                //- label(for="printer") Printer
+        .row
+            .input-field.col.s4
+                select(name="font")
+                    if template
+                        if template.font
+                            option(value=template.font)=template.font
+                    option(value="") Select a font
+                    option(value="test") test
+            .input-field.col.s2
+                span DPI_600
+                .switch
+                    label
+                        | Off
+                        if template
+                            input(type='checkbox', name="dpi_600", checked=template.dpi_600)
+                        else
+                            input(type='checkbox', name="dpi_600", checked=false)
+                        span.lever
+                        | On
+            .input-field.col.s2
+                span Red
+                .switch
+                    label
+                        | Off
+                        if template
+                            input(type='checkbox', name="red", checked=template.red)
+                        else
+                            input(type='checkbox', name="red", checked=false)
+                        span.lever
+                        | On
+
+        button.btn.waves-effect.waves-light(type='submit', name='action')
+                | Submit
+                i.material-icons.right send
+    script.
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });

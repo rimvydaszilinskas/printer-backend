@@ -1,5 +1,8 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import multer from 'multer';
+import cloudinary from 'cloudinary';
+import cloudinaryStorage from 'multer-storage-cloudinary';
 
 import Config from './server/config';
 import Sequelize from './server/configuration/sequelize.config';
@@ -9,6 +12,7 @@ import PrinterServices from './server/services/printer-services';
 import EventServices from './server/services/event-services';
 import UserServices from './server/services/user-services';
 import path from 'path';
+import TemplateServices from './server/services/template-services';
 
 const config = Config['development'];
 
@@ -22,14 +26,33 @@ config.middleware = {
 // setup database
 const database = Sequelize(config);
 const printerServices = PrinterServices(database.models);
-const eventServices = EventServices(database.models)
-const userServices = UserServices(database.models)
+const eventServices = EventServices(database.models);
+const userServices = UserServices(database.models);
+const tempalteServices = TemplateServices(database.models);
 
 config.services = {
     PrinterServices: printerServices,
     EventServices: eventServices,
-    UserServices: userServices
+    UserServices: userServices,
+    TemplateServices: tempalteServices
 };
+
+// set up cloudinary for image uploads and manipulation
+cloudinary.config({
+    cloud_name: config.cloudinary.cloud_name,
+    api_key: config.cloudinary.api_key,
+    api_secret: config.cloudinary.api_secret
+});
+
+const storage = cloudinaryStorage({
+    cloudinary: cloudinary,
+    folder: 'printer',
+    allowedFormats: ['jpg', 'png']
+});
+
+const parser = multer({ storage: storage });
+
+config.middleware.parser = parser;
 
 const app = express();
 
