@@ -13,7 +13,7 @@ block main
                 .file-path-wrapper
                     input.file-path.validate(type='text')
         .row
-            .input.field.col.s12
+            .input-field.col.m6.s12
                 select(name="label")
                     if template
                         if template.label
@@ -38,8 +38,7 @@ block main
                     option(value="62x100") 62x100
                     option(value="102x51") 102x51
                     option(value="102x152") 102x152
-        .row
-            .input-field.col.s12
+            .input-field.col.m6.s12
                 select(name="printer")
                     if template
                         if template.printer
@@ -94,8 +93,57 @@ block main
         button.btn.waves-effect.waves-light(type='submit', name='action')
                 | Submit
                 i.material-icons.right send
+    if template
+        if template.textfields.length
+            for textField in template.textfields
+                form.col.s12(method="POST", action="/portal/templates/textfield/update")
+                    .row
+                        input(hidden=true, value=eventId, name="eventId")
+                        input(hidden=true, value=textField.id, name="id")
+                        .input-field.col.m4.s8
+                            input#placeholder.validate(type='text', name="placeholder", value=textField.placeholder, required)
+                            label(for='placeholder') Placeholder
+                        .input-field.col.m1.s4
+                            input#font_size.validate(type='number', name="font_size", value=textField.font_size min=12, max=250, required)
+                            label(for='font_size') Font size
+                        .input-field.col.m1.s3
+                            input#x.validate(type='number', name="x", value=textField.x)
+                            label(for='x') X
+                        .input-field.col.m1.s3
+                            input#y.validate(type='number', name="y", value=textField.y, required)
+                            label(for='y') Y
+                        .input-field.col.m3.s6
+                            select#align(name="align", onChange="selectAlign()")
+                                option(value=textField.align)=textField.align
+                                option(value="") Select alignment
+                                option(value="right") Right
+                                option(value="center") Center
+                        .col.m1.s3
+                            button.btn.waves-effect.waves-light(type='submit', name='action')
+                                | Update
+                                i.material-icons.right send
+                        .col.m1.s3
+                            a.btn.waves-effect.waves-light(href=`/portal/templates/textfield/remove/${eventId}/${textField.id}`)
+                                | Delete
+        else 
+            h4 No textfields
+        a.btn.waves-effect.waves-light(href=`/portal/templates/textfield/add/${eventId}/${template.id}`)
+            | Add a field
+            i.material-icons.right add
+        .row
+        if template.image
+            img.display-img(src=template.image)
     script.
         document.addEventListener('DOMContentLoaded', function() {
             var elems = document.querySelectorAll('select');
             var instances = M.FormSelect.init(elems);
         });
+
+        function selectAlign() {
+            var select = document.getElementById('align');
+            if(select.value === 'center') {
+                document.getElementById('x').disabled = true
+            } else {
+                document.getElementById('x').disabled = false
+            }
+        }

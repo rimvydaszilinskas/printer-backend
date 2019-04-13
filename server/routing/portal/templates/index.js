@@ -13,7 +13,16 @@ export default function TemplateRouting(config) {
             });
     });
 
-    router.post('/upload', config.middleware.parser.single('image'), (req, res) => {
+    router.post('/event', (req, res, next) => {
+        config.services.TemplateServices.eventHasTemplate(req.body.eventId)
+            .then(resp => {
+                res.send(resp);
+            }).catch(err => {
+                res.send(err);
+            });
+    })
+
+    router.post('/upload', config.middleware.parser.single('image'), (req, res, next) => {
         let template = {
             id: req.body.id,
             label: req.body.label === '' ? null : req.body.label,
@@ -32,22 +41,56 @@ export default function TemplateRouting(config) {
                 if(resp){
                     config.services.TemplateServices.update(template)
                         .then(response => {
-                            res.send(response);
+                            res.redirect(`/portal/templates/${req.body.eventId}`)
                         }).catch(err => {
-                            res.send(err);
+                            next(err);
                         });
                 } else {
                     config.services.TemplateServices.create(template)
                         .then(response => {
-                            res.send(response);
+                            res.redirect(`/portal/templates/${req.body.eventId}`)
                         }).catch(err => {
-                            res.send(err);
+                            next(err);
                         });
                 }
             }).catch(err => {
-                res.send(err);
+                next(err);
             });
         
+    });
+
+
+    router.get('/textfield/add/:eventId/:id', (req, res, next) => {
+        config.services.TemplateServices.addDefaultTextField(req.params.id)
+            .then(textField => {
+                res.redirect(`/portal/templates/${req.params.eventId}`);
+            }).catch(err => {
+                next(err);
+            });
+    });
+
+    router.get('/textfield/remove/:eventId/:id', (req, res, next) => {
+        config.services.TemplateServices.removeTextField(req.params.id)
+            .then(resp => {
+                res.redirect(`/portal/templates/${req.params.eventId}`);
+            }).catch(err => {
+                next(err);
+            });
+    });
+
+    router.post('/textfield/update', (req, res, next) => {
+        config.services.TemplateServices.updateTextField({
+            id: req.body.id,
+            placeholder: req.body.placeholder,
+            font_size: req.body.font_size,
+            x: req.body.align === 'center' ? null : req.body.x === '' ? 0 : req.body.x,
+            y: req.body.y,
+            align: req.body.align === '' ? null : req.body.align
+        }).then(resp => {
+            res.redirect(`/portal/templates/${req.body.eventId}`)
+        }).catch(err => {
+            next(err);
+        });
     });
 
     return router;

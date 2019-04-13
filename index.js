@@ -62,6 +62,8 @@ app.use(bodyParser.json());
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'))
 
+app.use('/static', express.static('static'))
+
 app.use('/', Routing(config));
 
 app.get('*', (req, res) => {
