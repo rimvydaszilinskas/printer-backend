@@ -4,6 +4,8 @@ import { Op } from 'sequelize';
 export default function PrinterServices(models) {
     const Printer = models.Printer;
     const Event = models.Event;
+    const Template = models.Template;
+    const TextField = models.TextField;
 
     const get = (id) => {
         return new Promise((resolve, reject) => {
@@ -28,6 +30,16 @@ export default function PrinterServices(models) {
                                 }
                             ]
                         },
+                        include:[
+                            {
+                                model: Template,
+                                include: [
+                                    {
+                                        model: TextField
+                                    }
+                                ]
+                            }
+                        ],
                         required: false
                     }
                 ]

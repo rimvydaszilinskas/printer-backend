@@ -3,6 +3,8 @@ import bodyParser from 'body-parser';
 import multer from 'multer';
 import cloudinary from 'cloudinary';
 import cloudinaryStorage from 'multer-storage-cloudinary';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
 
 import Config from './server/config';
 import Sequelize from './server/configuration/sequelize.config';
@@ -53,7 +55,13 @@ const storage = cloudinaryStorage({
 const parser = multer({ storage: storage });
 
 config.middleware.parser = parser;
-
+config.middleware.isLoggedIn = () => {
+    if(req.session.user && req.cookies.user_sid) {
+        res.redirect('/dashboard');
+    } else {
+        next();
+    }
+}
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));

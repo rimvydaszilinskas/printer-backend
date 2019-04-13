@@ -12,7 +12,6 @@ export default function PrinterRouting(config) {
             config.services.PrinterServices.findOne(req.body.identifier, req.body.id)
                 .then(printer => {
                     if(printer) {
-                        console.log('if')
                         config.services.PrinterServices.get(printer.id)
                             .then(response => {
                                 return res.status(200).json({

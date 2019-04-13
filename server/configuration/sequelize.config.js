@@ -13,7 +13,7 @@ export default function Sequelize(config) {
 
     const printer = Printer(sqlize, sequelize);
     const event = Event(sqlize, sequelize);
-    // const user = User(sqlize, sequelize);
+    const user = User(sqlize, sequelize);
     const template = Template(sqlize, sequelize);
     const textField = TextField(sqlize, sequelize);
 
@@ -23,7 +23,7 @@ export default function Sequelize(config) {
 
     database.models.Printer = printer;
     database.models.Event = event;
-    // database.models.User = user;
+    database.models.User = user;
     database.models.Template = template;
     database.models.TextField = textField;
 
