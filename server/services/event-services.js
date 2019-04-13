@@ -48,7 +48,8 @@ export default function EventServices(models) {
                 title: event.title,
                 startDate: event.startDate,
                 endDate: event.endDate,
-                tbid: tbid
+                printerId: event.printerId === '' ? null : event.printerId,
+                tbid: event.tbid === '' ? null : event.tbid
             }, {
                 where: {
                     id: event.id

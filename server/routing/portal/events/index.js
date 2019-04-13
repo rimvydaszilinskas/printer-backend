@@ -13,13 +13,43 @@ export default function EventRouting(config) {
             });
     });
 
-    router.get('/:id', (req, res) => {
+    router.get('/edit/:id', (req, res, next) => {
         config.services.EventServices.get(req.params.id)
             .then(event => {
-                res.render('event_preview', {event: event});
+                let startTime = event.startDate.getFullYear() + '-' 
+                    + (event.startDate.getMonth() + 1 < 10 ? '0' + (event.startDate.getMonth() + 1) : event.startDate.getMonth() + 1) 
+                    + '-' + (event.startDate.getDate() < 10 ? '0' + event.startDate.getDate() : event.startDate.getDate());
+                let endTime = event.endDate.getFullYear() + '-' 
+                    + (event.endDate.getMonth() + 1 < 10 ? '0' + (event.endDate.getMonth() + 1) : event.endDate.getMonth() + 1) 
+                    + '-' + (event.endDate.getDate() < 10 ? '0' + event.endDate.getDate() : event.endDate.getDate());
+
+                config.services.PrinterServices.getAll()
+                    .then(printers => {
+                        res.render('event_preview', {event: event, startTime: startTime, endTime: endTime, printers: printers});
+                    }).catch(err => {
+                        next(`Error occured parsing printers!`);
+                    })
             }).catch(err => {
-                res.send(err);
+                next(`There is no event @${req.params.id}`);
             }); 
+    });
+
+    router.post('/edit/:id', (req, res, next) => {
+        let event = {
+            id: req.params.id,
+            title: req.body.title,
+            tbid: req.body.tbid,
+            printerId: req.body.printer,
+            startDate: req.body.startDate,
+            endDate: req.body.endDate
+        };
+
+        config.services.EventServices.update(event)
+            .then(event => {
+                res.redirect(`/portal/events/edit/${req.params.id}`)
+            }).catch(err => {
+                next(err);
+            });
     });
 
     router.get('/new', (req, res) => {
@@ -53,7 +83,7 @@ export default function EventRouting(config) {
         
         config.services.EventServices.create(event)
             .then(event => {
-                res.render('event_preview', {event: event});
+                res.redirect(`/portal/events/edit/${event.id}`)
             }).catch(err => {
                 res.send('nok')
             });

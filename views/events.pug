@@ -17,8 +17,10 @@ block main
                         td=event.startDate.getMonth() + 1
                         td=`${event.startDate.getDate()} - ${event.endDate.getDate()}`
                         td 
-                            a.waves-effect.waves-light.btn(href=`/portal/events/${event.id}`) View more
+                            a.waves-effect.waves-light.btn(href=`/portal/events/edit/${event.id}`) View more
         a.btn-floating(href="/portal/events/new")
             i.material-icons add
     else
         h4 No events
+        a.btn-floating(href="/portal/events/new")
+            i.material-icons add

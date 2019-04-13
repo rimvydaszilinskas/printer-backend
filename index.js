@@ -41,6 +41,15 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use('/', Routing(config));
 
+app.get('*', (req, res) => {
+    res.send('wrong path')
+});
+
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(500).send('Something broke!');
+});
+
 app.listen(config.application.port, (err) => {
     if(err)
         console.log('Error')
