@@ -18,7 +18,7 @@ block main
                     li.collection-item
                         div
                             b=`${event.title} | ${event.startDate.getFullYear()}/${event.startDate.getMonth() < 10 ? '0' + event.startDate.getMonth() : event.startDate.getMonth()}/${event.startDate.getDate() < 10 ? '0' + event.startDate.getDate() : event.startDate.getDate()} - ${event.endDate.getFullYear()}/${event.endDate.getMonth() < 10 ? '0' + event.endDate.getMonth() : event.endDate.getMonth()}/${event.endDate.getDate() < 10 ? '0' + event.endDate.getDate() : event.endDate.getDate()}`
-                            a.secondary-content(href=`/portal/events/${event.id}`)
+                            a.secondary-content(href=`/portal/events/edit/${event.id}`)
                                 i.material-icons send
             else
                 li.collection-item
