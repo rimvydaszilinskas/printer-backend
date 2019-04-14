@@ -7,19 +7,18 @@ import session from 'express-session';
 import uuid from 'uuid/v4';
 import FileStore from 'session-file-store';
 import passport from 'passport';
-import { Strategy } from 'passport-local';
 import cookieParser from 'cookie-parser';
 
-import Config from './server/config';
-import Sequelize from './server/configuration/sequelize.config';
-import SecretOK from './server/configuration/middleware.config';
-import Routing from './server/routing'
-import PrinterServices from './server/services/printer-services';
-import EventServices from './server/services/event-services';
-import UserServices from './server/services/user-services';
+import Config from './config';
+import Sequelize from './configuration/sequelize.config';
+import SecretOK from './configuration/middleware.config';
+import Routing from './routing'
+import PrinterServices from './services/printer-services';
+import EventServices from './services/event-services';
+import UserServices from './services/user-services';
 import path from 'path';
-import TemplateServices from './server/services/template-services';
-import Passport from './server/configuration/passport.config';
+import TemplateServices from './services/template-services';
+import Passport from './configuration/passport.config';
 
 const config = Config['development'];
 
@@ -74,9 +73,9 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.set('view engine', 'pug');
-app.set('views', path.join(__dirname, 'views'))
+app.set('views', path.join(__dirname, '../views'))
 
-app.use('/static', express.static('static'))
+app.use('/static', express.static('../static'))
 
 const fStore = FileStore(session);
 
@@ -103,8 +102,8 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something broke!');
 });
 
-app.listen(config.application.port, (err) => {
+app.listen(process.env.PORT || config.application.port, (err) => {
     if(err)
         console.log('Error')
-    console.log(`Listening on port ${config.application.port}`);
+    console.log(`Listening on port ${process.env.PORT || config.application.port}`);
 });
