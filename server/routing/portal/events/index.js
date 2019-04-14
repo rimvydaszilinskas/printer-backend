@@ -4,7 +4,7 @@ import { Router } from 'express';
 export default function EventRouting(config) {
     const router = Router();
 
-    router.get('/', (req, res) => {
+    router.get('/', config.middleware.secured, (req, res) => {
         config.services.EventServices.getAll()
             .then(events => {
                 res.render('events', {events: events});
@@ -13,7 +13,7 @@ export default function EventRouting(config) {
             });
     });
 
-    router.get('/edit/:id', (req, res, next) => {
+    router.get('/edit/:id', config.middleware.secured, (req, res, next) => {
         config.services.EventServices.get(req.params.id)
             .then(event => {
                 let startTime = event.startDate.getFullYear() + '-' 
@@ -34,7 +34,7 @@ export default function EventRouting(config) {
             }); 
     });
 
-    router.post('/edit/:id', (req, res, next) => {
+    router.post('/edit/:id', config.middleware.secured, (req, res, next) => {
         let event = {
             id: req.params.id,
             title: req.body.title,
@@ -52,11 +52,20 @@ export default function EventRouting(config) {
             });
     });
 
-    router.get('/new', (req, res) => {
+    router.get('/delete/:id', config.middleware.secured, (req, res, next) => {
+        config.services.EventServices.remove(req.params.id)
+            .then(resp => {
+                return res.redirect('/portal/events');
+            }).catch(err => {
+                res.redirect(`/portal/events/edit/${req.params.id}`);
+            });
+    });
+
+    router.get('/new', config.middleware.secured, (req, res) => {
         res.render('new_event');
     });
 
-    router.post('/new', (req, res) => {
+    router.post('/new', config.middleware.secured, (req, res) => {
         let event = {};
 
         if(req.body.startTime !== undefined && req.body.startTime !== null && req.body.startTime !== '') {

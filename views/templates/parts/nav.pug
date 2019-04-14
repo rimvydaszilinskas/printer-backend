@@ -1,18 +1,27 @@
 nav.nav-extended
   .nav-wrapper
     a.brand-logo.center(href='#!') TB
-    <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    a.sidenav-trigger(href='#', data-target='mobile-demo')
+      i.material-icons menu
     ul.left.hide-on-med-and-down
       li
         a(href='/portal/printers') Printers
       li
         a(href='/portal/events') Events
+      li
+        a(href='/portal/auth/register') Register
+      li
+        a(href='/portal/auth/logout') Logout
 
 ul#mobile-demo.sidenav
   li
     a(href='/portal/printers') Printers
   li
     a(href='/portal/events') Events
+  li
+        a(href='/portal/auth/register') Register
+  li
+    a(href='/portal/auth/logout') Logout
   
 script.
   document.addEventListener('DOMContentLoaded', function() {

@@ -1,10 +1,13 @@
 extends templates/layout
 block main
-    form.col.s12(method="post", action=`/portal/events/edit/${event.id}`)
+    form.col.s12.padding-top(method="post", action=`/portal/events/edit/${event.id}`)
         .row
-            .input-field.col.s12
+            .input-field.col.s8
                 input#id.validate(type='text', name="title", value=event.id, required, disabled)
                 label(for='id') ID
+            .input-field.col.s4
+                a.btn(href=`/portal/events/delete/${event.id}`) Delete
+                span.helper-text(data-error='wrong', data-success='right') Deletes the event instantly
         .row
             .input-field.col.s6
                 input#title.validate(type='text', name="title", value=event.title, required)

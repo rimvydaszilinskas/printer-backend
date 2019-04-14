@@ -1,6 +1,6 @@
 extends templates/layout
 block main
-    form.col.s12(method="POST", enctype="multipart/form-data", action="/portal/templates/upload")
+    form.col.s12.padding-top(method="POST", enctype="multipart/form-data", action="/portal/templates/upload")
         input(type="text",hidden=true, name="eventId", value=eventId)
         if template
             if template.id

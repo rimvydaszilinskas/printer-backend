@@ -1,6 +1,6 @@
 extends templates/layout
 block main
-    form.col.s12(method="post", action="/portal/events/new")
+    form.col.s12.padding-top(method="post", action="/portal/events/new")
         .row
             .input-field.col.s6
                 input#title.validate(type='text', name="title", required)

@@ -64,7 +64,7 @@ export default function EventServices(models) {
 
     const remove = (id) => {
         return new Promise((resolve, reject) => {
-            Event.delete({
+            Event.destroy({
                 where: {
                     id: id
                 }

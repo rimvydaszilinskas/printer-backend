@@ -3,8 +3,12 @@ import bodyParser from 'body-parser';
 import multer from 'multer';
 import cloudinary from 'cloudinary';
 import cloudinaryStorage from 'multer-storage-cloudinary';
-import cookieParser from 'cookie-parser';
 import session from 'express-session';
+import uuid from 'uuid/v4';
+import FileStore from 'session-file-store';
+import passport from 'passport';
+import { Strategy } from 'passport-local';
+import cookieParser from 'cookie-parser';
 
 import Config from './server/config';
 import Sequelize from './server/configuration/sequelize.config';
@@ -15,6 +19,7 @@ import EventServices from './server/services/event-services';
 import UserServices from './server/services/user-services';
 import path from 'path';
 import TemplateServices from './server/services/template-services';
+import Passport from './server/configuration/passport.config';
 
 const config = Config['development'];
 
@@ -55,28 +60,43 @@ const storage = cloudinaryStorage({
 const parser = multer({ storage: storage });
 
 config.middleware.parser = parser;
-config.middleware.isLoggedIn = () => {
-    if(req.session.user && req.cookies.user_sid) {
-        res.redirect('/dashboard');
-    } else {
+config.middleware.secured = (req, res, next) => {
+    if(req.isAuthenticated())
         next();
-    }
-}
+    else
+        res.redirect('/portal/auth');
+};
+
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'))
 
 app.use('/static', express.static('static'))
 
-app.use('/', Routing(config));
+const fStore = FileStore(session);
 
-app.get('*', (req, res) => {
-    res.send('wrong path')
-});
+app.use(session({
+    genid: (req) => {
+        console.log(req.sessionID);
+        return uuid();
+    },
+    // store: new fStore(),
+    secret: config.application.secret,
+    resave: false,
+    saveUninitialized: true
+}));
+
+Passport(config, passport);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/', Routing(config));
 
 app.use((err, req, res, next) => {
     console.log(err);

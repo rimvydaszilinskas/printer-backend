@@ -1,4 +1,44 @@
+body {
+    background-color: #DEF2F1;
+}
+
+nav {
+    background-color: #2B7A78;
+}
+
+.alert {
+    margin-top: 25px;
+    padding: 15px;
+    font-size: 1.2em;
+    border-radius: 5px;
+    background-color: #17252A;
+    color: #FEFFFF;
+    text-align: center;
+}
+
+.alert i {
+    font-size: 2em
+}
+
+.padding-top {
+    padding-top: 15px;
+}
+
+button, .btn, .btn-floating {
+    background-color: #17252A;
+}
+
 .display-img {
     max-width: 400px;
     max-height: 400px;
+}
+
+.login-form {
+    background-color: #FEFFFF;
+    margin-top: 25px;
+    border-radius: 5px;
+}
+
+.login-wrapper {
+    padding: 25px;
 }

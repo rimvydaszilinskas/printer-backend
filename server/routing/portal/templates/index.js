@@ -4,7 +4,7 @@ import { Router } from 'express';
 export default function TemplateRouting(config) {
     const router = Router();
 
-    router.get('/:eventID', (req, res, next) => {
+    router.get('/:eventID', config.middleware.secured, (req, res, next) => {
         config.services.TemplateServices.eventHasTemplate(req.params.eventID)
             .then(template => {
                 res.render('templating', {eventId: req.params.eventID, template: template});
@@ -13,7 +13,7 @@ export default function TemplateRouting(config) {
             });
     });
 
-    router.post('/event', (req, res, next) => {
+    router.post('/event', config.middleware.secured, (req, res, next) => {
         config.services.TemplateServices.eventHasTemplate(req.body.eventId)
             .then(resp => {
                 res.send(resp);
@@ -22,7 +22,7 @@ export default function TemplateRouting(config) {
             });
     })
 
-    router.post('/upload', config.middleware.parser.single('image'), (req, res, next) => {
+    router.post('/upload', config.middleware.secured, config.middleware.parser.single('image'), (req, res, next) => {
         let template = {
             id: req.body.id,
             label: req.body.label === '' ? null : req.body.label,
@@ -60,7 +60,7 @@ export default function TemplateRouting(config) {
     });
 
 
-    router.get('/textfield/add/:eventId/:id', (req, res, next) => {
+    router.get('/textfield/add/:eventId/:id', config.middleware.secured, (req, res, next) => {
         config.services.TemplateServices.addDefaultTextField(req.params.id)
             .then(textField => {
                 res.redirect(`/portal/templates/${req.params.eventId}`);
@@ -69,7 +69,7 @@ export default function TemplateRouting(config) {
             });
     });
 
-    router.get('/textfield/remove/:eventId/:id', (req, res, next) => {
+    router.get('/textfield/remove/:eventId/:id', config.middleware.secured, (req, res, next) => {
         config.services.TemplateServices.removeTextField(req.params.id)
             .then(resp => {
                 res.redirect(`/portal/templates/${req.params.eventId}`);
@@ -78,7 +78,7 @@ export default function TemplateRouting(config) {
             });
     });
 
-    router.post('/textfield/update', (req, res, next) => {
+    router.post('/textfield/update', config.middleware.secured, (req, res, next) => {
         config.services.TemplateServices.updateTextField({
             id: req.body.id,
             placeholder: req.body.placeholder,

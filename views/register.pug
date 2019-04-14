@@ -1,7 +1,18 @@
-extends templates/public_layout
+extends templates/layout
 block main
+    if user
+        .row
+            .car-panel.alert
+                i.large.material-icons check
+                b=user.username
+                |  created
+    if error
+        .row
+            .car-panel.alert
+                i.large.material-icons error_outline
+                b=error
     .row
-        form.col.m6.s12.offset-m3.login-form(method="POST", action="/portal/auth/login")
+        form.col.m6.s12.offset-m3.login-form(method="POST", action="/portal/auth/register")
             .login-wrapper
                 .row
                     .input-field.col.s12
@@ -13,4 +24,4 @@ block main
                         input.validate#password(type="password", name="password", required)
                         label(for="password") Password
                 .row
-                    button.btn.col.s12(type="submit") Login
+                    button.btn.col.s12(type="submit") Register

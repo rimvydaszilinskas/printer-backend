@@ -4,7 +4,7 @@ import { Router } from 'express';
 export default function PrinterRouting(config) {
     const router = Router();
 
-    router.get('/', (req, res) => {
+    router.get('/', config.middleware.secured, (req, res) => {
         config.services.PrinterServices.getAll()
             .then(printers => {
                 res.render('printers', {printers: printers});
@@ -13,7 +13,7 @@ export default function PrinterRouting(config) {
             })
     });
 
-    router.get('/:id', (req, res) => {
+    router.get('/:id', config.middleware.secured, (req, res) => {
         config.services.PrinterServices.getFull(req.params.id)
             .then(printer => {
                 res.render('printer_preview', {printer: printer})

@@ -6,7 +6,7 @@ export default function Routing(config) {
     const router = Router();
 
     router.get('/', (req, res) => {
-        res.send(config)
+        res.redirect('/portal')
     });
 
     router.use('/api', ApiRouting(config));

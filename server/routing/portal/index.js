@@ -8,6 +8,10 @@ import AuthRouting from './auth/index';
 export default function PortalRouting(config) {
     const router = Router();
 
+    router.get('/', (req, res) => {
+        res.redirect('/portal/auth');
+    });
+
     router.use('/printers', PrinterRouting(config));
     router.use('/events', EventRouting(config));
     router.use('/templates', TemplateRouting(config));
