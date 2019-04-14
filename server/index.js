@@ -75,7 +75,7 @@ app.use(cookieParser());
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, '../views'))
 
-app.use('/static', express.static('../static'))
+app.use('/static', express.static(path.join(__dirname, '../static')))
 
 const fStore = FileStore(session);
 
