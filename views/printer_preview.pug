@@ -1,14 +1,16 @@
 extends templates/layout
 block main
     .row.padding-top
-        form.col.s12(method="post", action="/portal/events/update")
+        form.col.s12
             .row
                 .input-field.col.s6
                     input#id.validate(type='text', name="title", value=printer.id, required, disabled)
                     label(for='id') ID
                 .input-field.col.s6
-                    input#title.validate(type='text', name="title", value=printer.identifier, required)
+                    input#title.validate(type='text', name="title", value=printer.identifier, disabled)
                     label(for='title') Identifier
+            .row
+                a.btn(href=`/portal/printers/delete/${printer.id}`) Delete
     .row
         ul.collection.with-header
             li.collection-header

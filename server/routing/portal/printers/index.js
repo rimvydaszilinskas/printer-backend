@@ -23,5 +23,14 @@ export default function PrinterRouting(config) {
             });
     });
 
+    router.get('/delete/:id', config.middleware.secured, (req, res) => {
+        config.services.PrinterServices.remove(req.params.id)
+            .then(resp => {
+                res.redirect('/portal/printers');
+            }).catch(err => {
+                res.redirect(`/portal/printers/${req.params.id}`);
+            });
+    });
+
     return router;
 };

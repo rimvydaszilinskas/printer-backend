@@ -194,7 +194,7 @@ export default function PrinterServices(models) {
 
     const remove = (id) => {
         return new Promise((resolve, reject) => {
-            Printer.delete({
+            Printer.destroy({
                 where: {
                     id: id
                 }
