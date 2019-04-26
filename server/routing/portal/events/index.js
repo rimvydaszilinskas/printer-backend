@@ -13,7 +13,7 @@ export default function EventRouting(config) {
             });
     });
 
-    router.get('/edit/:id', config.middleware.secured, (req, res, next) => {
+    router.get('/edit/:id', (req, res, next) => {
         config.services.EventServices.get(req.params.id)
             .then(event => {
                 let startTime = event.startDate.getFullYear() + '-' 
@@ -25,8 +25,15 @@ export default function EventRouting(config) {
 
                 config.services.PrinterServices.getAll()
                     .then(printers => {
+                        let printer = printers.find( p => {
+                            return p.id === event.printerId;
+                        });
+
+                        event.printer = printer;
+                        
                         res.render('event_preview', {event: event, startTime: startTime, endTime: endTime, printers: printers});
                     }).catch(err => {
+                        console.log(err);
                         next(`Error occured parsing printers!`);
                     })
             }).catch(err => {
